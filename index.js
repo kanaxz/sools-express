@@ -36,7 +36,7 @@ module.exports = {
     })
     const protocol = config.express.mode === 'http' ? http : https
     const server = protocol.createServer({
-      ...config.express.options
+      ...(config.express?.options || {})
     }, expressApp)
 
     expressApp.get('/ping', (req, res) => {
