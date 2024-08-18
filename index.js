@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const https = require('https')
+const http = require('http')
 const cors = require('cors')
 const { join } = require('path')
 const helmet = require('helmet')
@@ -33,7 +34,8 @@ module.exports = {
       console.log(req.method, req.url, JSON.stringify(req.body, null, ' '))
       next()
     })
-    const server = https.createServer({
+    const protocol = config.express.mode === 'http' ? http : https
+    const server = protocol.createServer({
       ...config.express.options
     }, expressApp)
 
