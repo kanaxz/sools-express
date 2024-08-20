@@ -35,9 +35,11 @@ module.exports = {
 
     core.on('ready', () => {
       console.log(`Listening on port ${config.port}`)
-      expressApp.use('/*', (req, res) => {
-        res.sendFile(join(config.dist.path, 'index.html'))
-      })
+      if (config.dist) {
+        expressApp.use('/*', (req, res) => {
+          res.sendFile(join(config.dist.path, 'index.html'))
+        })
+      }
       server.listen(config.port, '0.0.0.0')
     })
 
