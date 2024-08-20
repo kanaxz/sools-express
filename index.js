@@ -29,7 +29,7 @@ module.exports = {
     }, expressApp)
 
     if (config.dist) {
-      expressApp.use(config.dist.publicPath.static(config.dist.path))
+      expressApp.use(config.dist.publicPath, express.static(config.dist.path))
     }
 
 
