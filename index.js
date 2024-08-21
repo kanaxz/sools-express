@@ -7,7 +7,9 @@ const { join } = require('path')
 
 module.exports = {
   name: 'express',
-  dependencies: ['core'],
+  dependencies: [
+    require('sools-core-server'),
+  ],
   construct({ core }, { express: config }) {
     const expressApp = express()
 
@@ -19,10 +21,7 @@ module.exports = {
     expressApp.use(bodyParser.json())
     expressApp.use(bodyParser.urlencoded({ extended: false }))
 
-    expressApp.use((req, res, next) => {
-      console.log(req.method, req.url, JSON.stringify(req.body, null, ' '))
-      next()
-    })
+
     const protocol = config.mode === 'http' ? http : https
     const server = protocol.createServer({
       ...(config?.options || {})
@@ -32,6 +31,10 @@ module.exports = {
       expressApp.use(config.dist.publicPath, express.static(config.dist.path))
     }
 
+    expressApp.use((req, res, next) => {
+      console.log(req.method, req.url, JSON.stringify(req.body, null, ' '))
+      next()
+    })
 
     core.on('ready', () => {
       console.log(`Listening on port ${config.port}`)
